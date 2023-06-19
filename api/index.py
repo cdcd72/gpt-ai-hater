@@ -5,8 +5,8 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, AudioMessage, TextSendMessage
-from ai.chatgpt import *
-from config.configs import *
+from api.ai.chatgpt import *
+from api.config.configs import *
 
 load_dotenv()
 
@@ -54,9 +54,14 @@ def handle_text_message(event):
     user_id = event.source.user_id
     if not (user_exists(user_id)):
         init_user(user_id)
-    line_bot_api.reply_message(
-        event.reply_token, TextSendMessage(text=chat(user_id, event.message.text))
-    )
+    user_input = event.message.text
+    if (user_input == "/forget") or (user_input == "忘記"):
+        user_dict[user_id][user_prompt_key] = Prompt()
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="已忘記"))
+    else:
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text=chat(user_id, user_input))
+        )
 
 
 @line_handler.add(MessageEvent, message=AudioMessage)

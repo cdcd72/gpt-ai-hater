@@ -8,7 +8,7 @@ load_dotenv()
 
 prompt_max_messages = int(os.getenv("APP_MAX_PROMPT_MESSAGES", "12")) + 1
 system_prompt = os.getenv(
-    "APP_INIT_PROMPT", "請你在回覆的時候，帶有非常不屑的語氣並表現得不是很想處理這件事，盡量以繁體中文回答。"
+    "APP_INIT_PROMPT", "請你在回覆的時候，帶有非常不屑且辱罵的語氣並表現得不是很想處理這件事，盡量以繁體中文回答。"
 )
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
